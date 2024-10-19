@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>Simulation Results</h1>
+        <h5>Aaranyadev Mukherjee, XIC</h5>
+        <p><strong>Ball Velocity:</strong> {{ ball_velocity }} m/s</p>
+        <p><strong>Train Velocity:</strong> {{ train_velocity }} m/s</p>
+        <p><strong>Maximum Height:</strong> {{ max_height }} meters</p>
+        <p><strong>Time of Ascent:</strong> {{ time_of_ascent }} seconds</p>
+        <p><strong>Time of Flight:</strong> {{ time_of_flight }} seconds</p>
+        <p><strong>Horizontal Range:</strong> {{ horizontal_range }} meters</p>
+        <button class="btn btn-primary" onclick="showAnimation()">Show Animation</button>
+        <a href="/" class="btn btn-secondary">Back to Simulation</a>
+    </div>
+
+    <script>
+        function showAnimation() {
+            // Redirect to the animation page with the necessary parameters
+            const params = new URLSearchParams({
+                ball_velocity: {{ ball_velocity }},
+                train_velocity: {{ train_velocity }},
+                angle: {{ angle }}
+            }).toString();
+            window.location.href = `/simulate?${params}`;
+        }
+    </script>
+</body>
+</html>

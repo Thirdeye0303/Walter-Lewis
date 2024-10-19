@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walter Lewis Train Example Simulator</title>
+    <style>
+        body {
+            background-color: #e0f7fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 1px solid #333;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+        h1, h5 {
+            text-align: center;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Walter Lewis Train Example Simulator</h1>
+    <h5>Aaranyadev Mukherjee, XIC</h5>
+    <canvas id="simulationCanvas" width="800" height="400"></canvas>
+    <button onclick="restartSimulation()">Restart Simulation</button>
+    <script>
+        const canvas = document.getElementById('simulationCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Parameters from the results page
+        const ballVelocity = {{ ball_velocity }}; // User-defined ball velocity
+        const trainVelocity = {{ train_velocity }}; // User-defined train velocity
+        const angle = {{ angle }}; // Launch angle in degrees
+        const g = 9.81;  // Acceleration due to gravity (m/s²)
+
+        // Convert angle to radians for calculations
+        const angleRad = angle * Math.PI / 180;
+
+        // Calculate time of flight and horizontal range
+        const timeOfFlight = (2 * ballVelocity * Math.sin(angleRad)) / g;
+        const horizontalRange = ballVelocity * Math.cos(angleRad) * timeOfFlight;
+
+        // Variables to track position of ball and train
+        let ballX = 0;
+        let ballY = canvas.height;
+        let trainX = 0;
+        let trainY = canvas.height - 30; // Height of the train
+        let time = 0;
+
+        function drawTrain() {
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(trainX, trainY, 100, 30); // Train represented as a rectangle
+        }
+
+        function drawBall() {
+            ctx.fillStyle = 'red';
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, 10, 0, Math.PI * 2); // Ball represented as a circle
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function updatePositions() {
+            // Calculate the ball's position based on projectile motion equations
+            ballX = ballVelocity * Math.cos(angleRad) * time; // Horizontal position of the ball
+            ballY = canvas.height - (ballVelocity * Math.sin(angleRad) * time - 0.5 * g * time * time); // Vertical position of the ball
+
+            // Calculate train position (train moves horizontally)
+            trainX = trainVelocity * time;
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+            updatePositions(); // Update positions of ball and train
+
+            // Draw train and ball
+            drawTrain();
+            drawBall();
+
+            // Debugging: log positions
+            console.log(`Time: ${time.toFixed(2)}s, Ball X: ${ballX.toFixed(2)}, Ball Y: ${ballY.toFixed(2)}, Train X: ${trainX.toFixed(2)}`);
+
+            // Stop the animation if the ball has hit the ground or gone out of the horizontal range
+            if (ballY >= canvas.height || ballX >= horizontalRange) {
+                // When the ball hits the ground, stop the animation
+                ballY = canvas.height; // Reset ball Y to the bottom of the canvas
+                return;
+            }
+
+            time += 0.05; // Increment time by small intervals
+            requestAnimationFrame(animate); // Call animate again for the next frame
+        }
+
+        function startSimulation() {
+            time = 0; // Reset time to 0
+            animate(); // Start the animation loop
+        }
+
+        function restartSimulation() {
+            ballX = 0; // Reset ball X position
+            ballY = canvas.height; // Reset ball Y position
+            trainX = 0; // Reset train X position
+            time = 0; // Reset time to 0
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            startSimulation(); // Restart the simulation
+        }
+
+        // Start the animation
+        startSimulation();
+    </script>
+</body>
+</html>

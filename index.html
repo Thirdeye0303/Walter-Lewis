@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walter Lewis Train Example Simulator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>Walter Lewis Train Example Simulator</h1>
+        <h5>Aaranyadev Mukherjee, XIC</h5>
+        <form action="/simulate" method="post">
+            <div class="form-group">
+                <label for="ball_velocity">Enter Ball Velocity (m/s):</label>
+                <input type="number" step="any" class="form-control" id="ball_velocity" name="ball_velocity" required>
+            </div>
+            <div class="form-group">
+                <label for="train_velocity">Enter Train Velocity (m/s):</label>
+                <input type="number" step="any" class="form-control" id="train_velocity" name="train_velocity" required>
+            </div>
+            <div class="form-group">
+                <label for="angle">Enter Launch Angle (degrees):</label>
+                <input type="number" step="any" class="form-control" id="angle" name="angle" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Start Simulation</button>
+        </form>
+    </div>
+</body>
+</html>
